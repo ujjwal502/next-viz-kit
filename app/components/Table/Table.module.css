@@ -22,6 +22,15 @@
   position: sticky;
   top: 0;
   z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.th.dragging {
+  z-index: 2;
+  opacity: 0.9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: #e9ecef;
+  transform: scale(1.02);
 }
 
 .td {
@@ -32,6 +41,11 @@
 
 .tr:hover {
   background-color: #f3f4f6;
+}
+
+.tr td,
+.tr th {
+  transition: transform 0.3s ease;
 }
 
 .headerCell {
@@ -139,4 +153,57 @@
   white-space: nowrap;
   display: flex;
   align-items: center;
+}
+
+.draggable {
+  cursor: grab;
+  position: relative;
+}
+
+.draggable::after {
+  content: "↔";
+  position: absolute;
+  right: 4px;
+  opacity: 0.5;
+  font-size: 0.8em;
+}
+
+.draggable:hover::after {
+  opacity: 1;
+}
+
+/* Animation placeholder */
+@keyframes moveColumn {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(var(--move-distance));
+    opacity: 1;
+  }
+}
+
+/* Style for drop target indication */
+.dropTarget {
+  position: relative;
+}
+
+.dropTarget::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -2px;
+  width: 4px;
+  height: 100%;
+  background-color: #3b82f6;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.dropTarget.active::before {
+  opacity: 1;
 }

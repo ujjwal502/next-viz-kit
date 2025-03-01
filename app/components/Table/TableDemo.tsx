@@ -4,7 +4,6 @@ import React, { useMemo, useState } from "react";
 import { Table } from "./Table";
 import type { ColumnDef } from "@tanstack/react-table";
 
-// Sample type for our data
 type Person = {
   id: number;
   firstName: string;
@@ -14,25 +13,26 @@ type Person = {
   status: "active" | "inactive" | "pending";
 };
 
-// Generate sample data
 const generateData = (count: number): Person[] => {
-  return Array.from({ length: count }).map((_, index) => ({
-    id: index + 1,
-    firstName: `First${index + 1}`,
-    lastName: `Last${index + 1}`,
-    age: 20 + Math.floor(Math.random() * 50),
-    email: `user${index + 1}@example.com`,
-    status: ["active", "inactive", "pending"][
-      Math.floor(Math.random() * 3)
-    ] as Person["status"],
-  }));
+  return Array.from({ length: count }).map((_, index) => {
+    const ageOffset = (index % 5) * 10;
+    const statusIndex = index % 3;
+    const statusOptions = ["active", "inactive", "pending"] as const;
+
+    return {
+      id: index + 1,
+      firstName: `First${index + 1}`,
+      lastName: `Last${index + 1}`,
+      age: 25 + ageOffset,
+      email: `user${index + 1}@example.com`,
+      status: statusOptions[statusIndex],
+    };
+  });
 };
 
 export const TableDemo: React.FC = () => {
-  // State for global filter
   const [globalFilter, setGlobalFilter] = useState("");
 
-  // Define columns
   const columns = useMemo<ColumnDef<Person, unknown>[]>(
     () => [
       {
@@ -91,10 +91,8 @@ export const TableDemo: React.FC = () => {
     []
   );
 
-  // Generate data
   const data = useMemo(() => generateData(100), []);
 
-  // Filter function
   const filterData = (data: Person[], filterText: string) => {
     if (!filterText) return data;
     const lowercaseFilter = filterText.toLowerCase();
@@ -152,6 +150,7 @@ export const TableDemo: React.FC = () => {
         enableSorting={true}
         enableFiltering={true}
         enablePagination={true}
+        enableColumnOrdering={true}
         pageSize={10}
       />
     </div>

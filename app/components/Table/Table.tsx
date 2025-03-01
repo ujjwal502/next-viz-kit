@@ -21,6 +21,7 @@ export type TableProps<T extends object> = {
   enableSorting?: boolean;
   enableFiltering?: boolean;
   enablePagination?: boolean;
+  enableColumnOrdering?: boolean;
   pageSize?: number;
   className?: string;
 };
@@ -31,6 +32,7 @@ export function Table<T extends object>({
   enableSorting = true,
   enableFiltering = true,
   enablePagination = true,
+  enableColumnOrdering = true,
   pageSize = 10,
   className,
 }: TableProps<T>) {
@@ -41,6 +43,16 @@ export function Table<T extends object>({
     pageSize,
   });
 
+  const [columnOrder, setColumnOrder] = useState<string[]>(
+    columns
+      .map((column) => {
+        if (typeof column.id === "string") return column.id;
+
+        return String(column.id || "");
+      })
+      .filter(Boolean)
+  );
+
   const table = useReactTable({
     data,
     columns,
@@ -48,10 +60,12 @@ export function Table<T extends object>({
       sorting,
       columnFilters,
       pagination: enablePagination ? pagination : undefined,
+      columnOrder: enableColumnOrdering ? columnOrder : undefined,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
+    onColumnOrderChange: enableColumnOrdering ? setColumnOrder : undefined,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: enableFiltering ? getFilteredRowModel() : undefined,
     getSortedRowModel: enableSorting ? getSortedRowModel() : undefined,
@@ -67,6 +81,7 @@ export function Table<T extends object>({
           headerGroups={table.getHeaderGroups()}
           enableSorting={enableSorting}
           enableFiltering={enableFiltering}
+          enableColumnOrdering={enableColumnOrdering}
         />
 
         <TableBody

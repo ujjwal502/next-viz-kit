@@ -27,7 +27,7 @@ export default function Home() {
           </Link>
 
           <a
-            href="https://github.com/yourusername/next-viz-kit"
+            href="https://github.com/ujjwal502/next-viz-kit"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.secondary}

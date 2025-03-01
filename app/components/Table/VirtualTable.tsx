@@ -20,6 +20,7 @@ export type VirtualTableProps<T extends object> = {
   columns: ColumnDef<T, unknown>[];
   enableSorting?: boolean;
   enableFiltering?: boolean;
+  enableColumnOrdering?: boolean;
   height?: number;
   estimatedRowHeight?: number;
   className?: string;
@@ -30,12 +31,23 @@ export function VirtualTable<T extends object>({
   columns,
   enableSorting = true,
   enableFiltering = true,
+  enableColumnOrdering = true,
   height = 400,
   estimatedRowHeight = 40,
   className,
 }: VirtualTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  const [columnOrder, setColumnOrder] = useState<string[]>(
+    columns
+      .map((column) => {
+        if (typeof column.id === "string") return column.id;
+
+        return String(column.id || "");
+      })
+      .filter(Boolean)
+  );
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
@@ -45,9 +57,11 @@ export function VirtualTable<T extends object>({
     state: {
       sorting,
       columnFilters,
+      columnOrder: enableColumnOrdering ? columnOrder : undefined,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onColumnOrderChange: enableColumnOrdering ? setColumnOrder : undefined,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: enableFiltering ? getFilteredRowModel() : undefined,
     getSortedRowModel: enableSorting ? getSortedRowModel() : undefined,
@@ -62,10 +76,8 @@ export function VirtualTable<T extends object>({
     overscan: 10,
   });
 
-  // Get the total size of all rows
   const totalSize = rowVirtualizer.getTotalSize();
 
-  // Get the virtualized rows
   const virtualRows = rowVirtualizer.getVirtualItems();
 
   const paddingTop = virtualRows.length > 0 ? virtualRows[0].start : 0;
@@ -82,6 +94,7 @@ export function VirtualTable<T extends object>({
             headerGroups={table.getHeaderGroups()}
             enableSorting={enableSorting}
             enableFiltering={enableFiltering}
+            enableColumnOrdering={enableColumnOrdering}
           />
         </table>
       </div>

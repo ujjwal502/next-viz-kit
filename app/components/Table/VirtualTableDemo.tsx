@@ -14,25 +14,26 @@ type Person = {
   status: "active" | "inactive" | "pending";
 };
 
-// Generate larger sample data for virtualization demo
 const generateData = (count: number): Person[] => {
-  return Array.from({ length: count }).map((_, index) => ({
-    id: index + 1,
-    firstName: `First${index + 1}`,
-    lastName: `Last${index + 1}`,
-    age: 20 + Math.floor(Math.random() * 50),
-    email: `user${index + 1}@example.com`,
-    status: ["active", "inactive", "pending"][
-      Math.floor(Math.random() * 3)
-    ] as Person["status"],
-  }));
+  return Array.from({ length: count }).map((_, index) => {
+    const ageOffset = (index % 5) * 10;
+    const statusIndex = index % 3;
+    const statusOptions = ["active", "inactive", "pending"] as const;
+
+    return {
+      id: index + 1,
+      firstName: `First${index + 1}`,
+      lastName: `Last${index + 1}`,
+      age: 25 + ageOffset,
+      email: `user${index + 1}@example.com`,
+      status: statusOptions[statusIndex],
+    };
+  });
 };
 
 export const VirtualTableDemo: React.FC = () => {
-  // State for global filter
   const [globalFilter, setGlobalFilter] = useState("");
 
-  // Define columns
   const columns = useMemo<ColumnDef<Person, unknown>[]>(
     () => [
       {
@@ -91,10 +92,8 @@ export const VirtualTableDemo: React.FC = () => {
     []
   );
 
-  // Generate much larger data set (10,000 rows) to demonstrate virtualization performance
   const data = useMemo(() => generateData(10000), []);
 
-  // Filter function
   const filterData = (data: Person[], filterText: string) => {
     if (!filterText) return data;
     const lowercaseFilter = filterText.toLowerCase();
@@ -151,6 +150,7 @@ export const VirtualTableDemo: React.FC = () => {
         columns={columns}
         enableSorting={true}
         enableFiltering={true}
+        enableColumnOrdering={true}
         height={500}
         estimatedRowHeight={40}
       />
