@@ -1,0 +1,142 @@
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 14px;
+}
+
+.th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.tr:hover {
+  background-color: #f3f4f6;
+}
+
+.headerCell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.sortIcon {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.filterContainer {
+  margin-top: 8px;
+}
+
+.filterInput {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  background-color: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.paginationButton {
+  margin: 0 4px;
+  padding: 6px 12px;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.paginationButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background-color: #f3f4f6;
+}
+
+.pageInfo {
+  margin: 0 16px;
+}
+
+.pageSizeSelect {
+  margin-left: 16px;
+  padding: 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+/* Virtualized Table Styles */
+.virtualTableContainer {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.virtualTable {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.virtualScrollContainer {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.virtualRow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+}
+
+.virtualCell {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}

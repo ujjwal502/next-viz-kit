@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -13,39 +14,39 @@ export default function Home() {
           height={38}
           priority
         />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className={styles.ctas}>
+        <h1 style={{ marginTop: "20px" }}>Next Viz Kit</h1>
+        <p>
+          An open-source, feature-rich React dashboard library for complex data
+          visualization needs
+        </p>
+
+        <div className={styles.ctas} style={{ marginTop: "20px" }}>
+          <Link href="/table-demo" className={styles.primary}>
+            View Table Demo
+          </Link>
+
           <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+            href="https://github.com/yourusername/next-viz-kit"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.secondary}
           >
-            Read our docs
+            GitHub Repository
           </a>
         </div>
+
+        <ol style={{ marginTop: "30px" }}>
+          <li>
+            We&apos;ve created a table component demo at{" "}
+            <code>/table-demo</code>
+          </li>
+          <li>
+            View the source code in <code>app/components/Table</code>
+          </li>
+        </ol>
       </main>
+
       <footer className={styles.footer}>
         <a
           href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
