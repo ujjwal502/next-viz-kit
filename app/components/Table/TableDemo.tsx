@@ -151,6 +151,9 @@ export const TableDemo: React.FC = () => {
         enableFiltering={true}
         enablePagination={true}
         enableColumnOrdering={true}
+        enableExport={true}
+        exportFormats={["csv", "excel", "pdf"]}
+        exportFilename="people-data"
         pageSize={10}
       />
     </div>

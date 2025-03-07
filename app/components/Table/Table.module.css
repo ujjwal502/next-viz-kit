@@ -207,3 +207,55 @@
 .dropTarget.active::before {
   opacity: 1;
 }
+
+/* TableToolbar styles */
+.tableToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-bottom: none;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.tableToolbarContent {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.tableToolbarExport {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exportLabel {
+  font-size: 14px;
+  color: #4b5563;
+  margin-right: 4px;
+}
+
+.exportButton {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #374151;
+  transition: all 0.2s;
+}
+
+.exportButton:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.exportButton:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 1px;
+}

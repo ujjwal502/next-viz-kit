@@ -24,6 +24,18 @@ A high-performance table that can handle large datasets (10,000+ rows) efficient
 - ✅ Customizable columns
 - ✅ Responsive design
 - ✅ "No results" state
+- Virtualized rows/columns for handling thousands of records
+- Fixed headers and column freezing
+- Column resizing, reordering, and hiding
+- Advanced filtering (range, multi-select, custom functions)
+- Custom cell renderers and editors
+- Row selection, multi-selection, and batch operations
+- Expandable rows for hierarchical data
+- Server-side operations support
+- Pagination with customizable controls
+- Export to CSV, Excel, PDF
+- Keyboard navigation and accessibility
+- Row/cell highlighting based on conditions
 
 ## Usage - Standard Table
 
@@ -152,3 +164,19 @@ The components use CSS modules for styling. You can customize the appearance by:
 1. Passing a custom `className` prop
 2. Overriding the CSS variables in your global CSS
 3. Editing the `Table.module.css` file
+
+## Props
+
+| Prop                 | Type                               | Default                   | Description                                   |
+| -------------------- | ---------------------------------- | ------------------------- | --------------------------------------------- |
+| data                 | `T[]`                              | -                         | The data to display in the table              |
+| columns              | `ColumnDef<T, unknown>[]`          | -                         | Column definitions                            |
+| enableSorting        | `boolean`                          | `true`                    | Enable sorting functionality                  |
+| enableFiltering      | `boolean`                          | `true`                    | Enable filtering functionality                |
+| enablePagination     | `boolean`                          | `true`                    | Enable pagination                             |
+| enableColumnOrdering | `boolean`                          | `true`                    | Enable column reordering                      |
+| enableExport         | `boolean`                          | `true`                    | Enable export functionality                   |
+| exportFormats        | `Array<"csv" \| "excel" \| "pdf">` | `["csv", "excel", "pdf"]` | Export formats to enable                      |
+| exportFilename       | `string`                           | `"table-data"`            | Base filename for exports (without extension) |
+| pageSize             | `number`                           | `10`                      | Number of rows per page                       |
+| className            | `string`                           | -                         | Additional CSS class for the table container  |

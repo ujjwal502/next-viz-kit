@@ -13,7 +13,12 @@ import {
   PaginationState,
 } from "@tanstack/react-table";
 import styles from "./Table.module.css";
-import { TableHeader, TableBody, TablePagination } from "./components";
+import {
+  TableHeader,
+  TableBody,
+  TablePagination,
+  TableToolbar,
+} from "./components";
 
 export type TableProps<T extends object> = {
   data: T[];
@@ -22,6 +27,9 @@ export type TableProps<T extends object> = {
   enableFiltering?: boolean;
   enablePagination?: boolean;
   enableColumnOrdering?: boolean;
+  enableExport?: boolean;
+  exportFormats?: Array<"csv" | "excel" | "pdf">;
+  exportFilename?: string;
   pageSize?: number;
   className?: string;
 };
@@ -33,6 +41,9 @@ export function Table<T extends object>({
   enableFiltering = true,
   enablePagination = true,
   enableColumnOrdering = true,
+  enableExport = true,
+  exportFormats,
+  exportFilename,
   pageSize = 10,
   className,
 }: TableProps<T>) {
@@ -76,6 +87,17 @@ export function Table<T extends object>({
 
   return (
     <div className={`${styles.tableContainer} ${className || ""}`}>
+      {enableExport && (
+        <TableToolbar
+          table={table}
+          data={data}
+          columns={columns}
+          enableExport={enableExport}
+          exportFormats={exportFormats}
+          exportFilename={exportFilename}
+        />
+      )}
+
       <table className={styles.table}>
         <TableHeader
           headerGroups={table.getHeaderGroups()}
