@@ -90,7 +90,6 @@ export function Table<T extends object>({
       {enableExport && (
         <TableToolbar
           table={table}
-          data={data}
           columns={columns}
           enableExport={enableExport}
           exportFormats={exportFormats}

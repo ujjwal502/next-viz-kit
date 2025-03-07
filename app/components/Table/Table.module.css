@@ -2,8 +2,10 @@
   width: 100%;
   overflow-x: auto;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   margin-bottom: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
 }
 
 .table {
@@ -11,18 +13,23 @@
   border-collapse: collapse;
   border-spacing: 0;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .th {
   background-color: #f9fafb;
   font-weight: 600;
   text-align: left;
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-bottom: 1px solid #e5e7eb;
   position: sticky;
   top: 0;
   z-index: 1;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #334155;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .th.dragging {
@@ -34,13 +41,19 @@
 }
 
 .td {
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-bottom: 1px solid #e5e7eb;
   transition: background-color 0.2s;
+  color: #334155;
+  vertical-align: middle;
 }
 
 .tr:hover {
   background-color: #f3f4f6;
+}
+
+.tr:last-child .td {
+  border-bottom: none;
 }
 
 .tr td,
@@ -78,20 +91,24 @@
 .pagination {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 12px 16px;
+  justify-content: space-between;
+  padding: 14px 16px;
   background-color: #f9fafb;
   border-top: 1px solid #e5e7eb;
+  font-size: 14px;
 }
 
 .paginationButton {
   margin: 0 4px;
   padding: 6px 12px;
   background-color: white;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
 }
 
 .paginationButton:disabled {
@@ -100,7 +117,8 @@
 }
 
 .paginationButton:hover:not(:disabled) {
-  background-color: #f3f4f6;
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
 .pageInfo {
@@ -213,12 +231,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  padding: 12px 16px;
   background-color: #f9fafb;
   border: 1px solid #e5e7eb;
   border-bottom: none;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .tableToolbarContent {
@@ -240,22 +258,115 @@
 }
 
 .exportButton {
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
   cursor: pointer;
-  color: #374151;
+  color: #475569;
+  font-weight: 500;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .exportButton:hover {
-  background-color: #e5e7eb;
-  border-color: #9ca3af;
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #334155;
 }
 
 .exportButton:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 1px;
+}
+
+/* TableDemo and VirtualTableDemo component styles */
+.searchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.searchInput {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  width: 300px;
+  font-size: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.searchInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.recordsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recordsText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recordCount {
+  font-weight: 600;
+  color: #334155;
+}
+
+.statusBadge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.statusActive {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.statusActiveIndicator {
+  background-color: #22c55e;
+}
+
+.statusInactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.statusInactiveIndicator {
+  background-color: #ef4444;
+}
+
+.statusPending {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+.statusPendingIndicator {
+  background-color: #eab308;
 }
