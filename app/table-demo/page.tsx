@@ -1,6 +1,9 @@
+"use client";
+
 import { TableDemo } from "../components/Table/TableDemo";
 import { VirtualTableDemo } from "../components/Table/VirtualTableDemo";
 import styles from "./page.module.css";
+import { TableEditingDemo } from "../components/Table";
 
 export default function TableDemoPage() {
   return (
@@ -105,6 +108,18 @@ export default function TableDemoPage() {
             </p>
             <div className={styles.tableWrapper}>
               <VirtualTableDemo />
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.demoSection}>
+          <div className={styles.demoCard}>
+            <h2 className={styles.demoTitle}>Table Editing Demo</h2>
+            <p className={styles.demoDescription}>
+              This demo showcases the editable table component.
+            </p>
+            <div className={styles.tableWrapper}>
+              <TableEditingDemo />
             </div>
           </div>
         </div>

@@ -370,3 +370,54 @@
 .statusPendingIndicator {
   background-color: #eab308;
 }
+
+/* Editable cell styles */
+.editable {
+  cursor: pointer;
+  position: relative;
+}
+
+.editable:hover {
+  background-color: rgba(243, 244, 246, 0.8);
+}
+
+.cellValue {
+  padding: 2px;
+  border-radius: 4px;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.cellInput {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.cellInput:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+}
+
+.editingInfo {
+  margin-bottom: 12px;
+  padding: 10px;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+  color: #0369a1;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.editingInfo::before {
+  content: "ℹ️";
+  margin-right: 8px;
+  font-size: 16px;
+}

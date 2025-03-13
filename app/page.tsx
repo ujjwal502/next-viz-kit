@@ -130,7 +130,8 @@ export default function Home() {
             </div>
             <h3>Data Tables</h3>
             <p>
-              Feature-rich tables with sorting, filtering, and virtualization
+              Feature-rich tables with sorting, filtering, editing,
+              virtualization and much more
             </p>
           </div>
 
@@ -255,6 +256,23 @@ export default function Home() {
               </li>
             </ol>
           </div>
+        </div>
+
+        <div className={styles.demoCardsContainer}>
+          <Link href="/table-demo" className={styles.demoCard}>
+            <h3 className={styles.demoCardTitle}>Table Demo →</h3>
+            <p className={styles.demoCardDescription}>
+              Explore basic and virtual table examples with sorting, filtering,
+              and exporting capabilities.
+            </p>
+          </Link>
+
+          <Link href="/table-editing-demo" className={styles.demoCard}>
+            <h3 className={styles.demoCardTitle}>Table Editing Demo →</h3>
+            <p className={styles.demoCardDescription}>
+              Explore editable tables with cell editing functionality.
+            </p>
+          </Link>
         </div>
       </div>
 

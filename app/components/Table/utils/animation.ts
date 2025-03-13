@@ -76,15 +76,11 @@ export const animateReordering = (
   initialPositions: Map<string, DOMRect>,
   animatingColumns: Set<string>
 ): void => {
-  // Store initial positions
   storeInitialPositions(columnIds, headerRefs, initialPositions);
 
-  // Use requestAnimationFrame to ensure layout is calculated
   requestAnimationFrame(() => {
-    // Get the final positions after layout
     const finalPositions = calculateFinalPositions(newOrder, headerRefs);
 
-    // Apply FLIP animation to each element
     newOrder.forEach((id) => {
       const element = headerRefs.get(id);
       if (!element) return;

@@ -32,6 +32,7 @@ export function getColumnHeaders<T extends object>(
 export function convertDataForExport<T extends object>(
   data: T[],
   columns: ColumnDef<T, unknown>[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any[][] {
   const headers = getColumnHeaders(columns);
 
@@ -41,6 +42,7 @@ export function convertDataForExport<T extends object>(
       const accessorKey = accessorColumn.accessorKey;
 
       if (accessorKey) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (row as any)[accessorKey];
       }
 

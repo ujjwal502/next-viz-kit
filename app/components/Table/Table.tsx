@@ -28,6 +28,12 @@ export type TableProps<T extends object> = {
   enablePagination?: boolean;
   enableColumnOrdering?: boolean;
   enableExport?: boolean;
+  enableEditing?: boolean;
+  onCellValueChange?: (
+    rowIndex: number,
+    columnId: string,
+    value: unknown
+  ) => void;
   exportFormats?: Array<"csv" | "excel" | "pdf">;
   exportFilename?: string;
   pageSize?: number;
@@ -42,6 +48,8 @@ export function Table<T extends object>({
   enablePagination = true,
   enableColumnOrdering = true,
   enableExport = true,
+  enableEditing = false,
+  onCellValueChange,
   exportFormats,
   exportFilename,
   pageSize = 10,
@@ -53,6 +61,10 @@ export function Table<T extends object>({
     pageIndex: 0,
     pageSize,
   });
+  const [editingCell, setEditingCell] = useState<{
+    rowIndex: number;
+    columnId: string;
+  } | null>(null);
 
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns
@@ -85,6 +97,17 @@ export function Table<T extends object>({
       : undefined,
   });
 
+  const handleCellValueChange = (
+    rowIndex: number,
+    columnId: string,
+    value: unknown
+  ) => {
+    if (onCellValueChange) {
+      onCellValueChange(rowIndex, columnId, value);
+    }
+    setEditingCell(null);
+  };
+
   return (
     <div className={`${styles.tableContainer} ${className || ""}`}>
       {enableExport && (
@@ -108,6 +131,10 @@ export function Table<T extends object>({
         <TableBody
           rows={table.getRowModel().rows}
           columnsLength={columns.length}
+          enableEditing={enableEditing}
+          editingCell={editingCell}
+          setEditingCell={setEditingCell}
+          onCellValueChange={handleCellValueChange}
         />
       </table>
 
