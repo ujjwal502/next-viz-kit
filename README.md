@@ -57,6 +57,13 @@ Next Viz Kit currently provides the following implemented features:
 - 📱 **Responsive Design**: Tables are responsive and work on various screen sizes
 - 🎨 **Customizable**: CSS modules for easy styling and theming
 
+## Additional features coming soon:
+
+- 📊 **Charts and Graphs**: Various chart implementations (area, bar, line, pie) are in progress
+- Keyboard navigation
+- Enhanced accessibility features
+- More visualization components
+
 ## Using The Code
 
 This is not a library to be installed via npm. Instead, you can:
