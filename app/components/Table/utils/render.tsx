@@ -11,14 +11,25 @@ export const renderFilterInput = <T,>(
 ): React.ReactNode => {
   if (!enableFiltering || !header.column.getCanFilter()) return null;
 
+  const getPlaceholder = () => {
+    const id = header.column.id;
+
+    const formattedId = id
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (str) => str.toUpperCase());
+
+    return `Filter ${formattedId}...`;
+  };
+
   return (
     <div className={styles.filterContainer}>
       <input
         type="text"
         value={(header.column.getFilterValue() as string) ?? ""}
         onChange={(e) => header.column.setFilterValue(e.target.value)}
-        placeholder={`Filter ${header.column.id}...`}
+        placeholder={getPlaceholder()}
         className={styles.filterInput}
+        aria-label={`Filter by ${header.column.id}`}
       />
     </div>
   );
@@ -35,10 +46,9 @@ export const renderSortIndicator = <T,>(
 
   return (
     <span className={styles.sortIcon}>
-      {{
-        asc: " 🔼",
-        desc: " 🔽",
-      }[header.column.getIsSorted() as string] ?? " ⏺️"}
+      {header.column.getIsSorted() === "asc" ? "🔼" : ""}
+      {header.column.getIsSorted() === "desc" ? "🔽" : ""}
+      {header.column.getIsSorted() === false ? "↕️" : ""}
     </span>
   );
 };

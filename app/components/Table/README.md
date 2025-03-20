@@ -12,12 +12,17 @@ A feature-rich table with sorting, filtering, and pagination.
 
 A high-performance table that can handle large datasets (10,000+ rows) efficiently using virtualization.
 
+### FileUploadTable
+
+A specialized table component that allows users to upload Excel (.xlsx, .xls) or CSV files and instantly convert them to interactive tables.
+
 ## Features
 
 - ✅ Sorting
 - ✅ Filtering
 - ✅ Pagination
 - ✅ Virtualization for large datasets
+- ✅ Excel and CSV file uploading and parsing
 - ✅ Modular architecture
 - ✅ Styling with CSS modules
 - ✅ TypeScript support
@@ -110,6 +115,32 @@ function MyComponent() {
 }
 ```
 
+## Usage - FileUploadTable
+
+```tsx
+import { FileUploadTable } from "./FileUploadTable";
+
+function MyComponent() {
+  return (
+    <FileUploadTable
+      // Use standard Table by default
+      useVirtualization={false}
+      // Or use virtualization for large files
+      // useVirtualization={true}
+      // virtualTableHeight={500}
+    />
+  );
+}
+```
+
+The FileUploadTable component allows users to:
+
+- Drag and drop Excel or CSV files
+- Browse and select files from their device
+- See file details and data statistics
+- Interact with the data using all standard table features (sorting, filtering, etc.)
+- Export the data to different formats
+
 ## Standard Table Props
 
 | Prop               | Type                      | Default | Description                                |
@@ -133,6 +164,13 @@ function MyComponent() {
 | `height`             | `number`                  | `400`   | Height of the table container              |
 | `estimatedRowHeight` | `number`                  | `40`    | Estimated height of each row               |
 | `className`          | `string`                  | -       | Additional CSS class for the table wrapper |
+
+## FileUploadTable Props
+
+| Prop                 | Type      | Default | Description                                      |
+| -------------------- | --------- | ------- | ------------------------------------------------ |
+| `useVirtualization`  | `boolean` | `false` | Whether to use virtualization for large datasets |
+| `virtualTableHeight` | `number`  | `500`   | Height of the virtualized table (when enabled)   |
 
 ## Modular Components
 

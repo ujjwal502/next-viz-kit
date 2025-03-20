@@ -11,7 +11,7 @@
 }
 
 .header {
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   padding: 4rem 2rem;
   text-align: center;
@@ -41,7 +41,7 @@
   flex: 1;
 }
 
-.featuresGrid {
+.featureCards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
@@ -97,13 +97,12 @@
 .demoCard {
   background-color: white;
   border-radius: 0.75rem;
+  padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  margin-bottom: 2rem;
 }
 
-.demoDescription {
-  margin: 0 1.5rem 1.5rem;
+.uploadDescription {
+  margin: 0 0 2rem;
   padding: 1rem 1.25rem;
   background: linear-gradient(to right, #f0fdf4, #dcfce7);
   border-left: 4px solid #10b981;
@@ -115,7 +114,7 @@
   align-items: center;
 }
 
-.demoDescription::before {
+.uploadDescription::before {
   content: "";
   display: flex;
   align-items: center;
@@ -124,15 +123,11 @@
   width: 24px;
   height: 24px;
   background-color: #10b981;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'%3E%3C/path%3E%3Cpolyline points='22 4 12 14.01 9 11.01'%3E%3C/polyline%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='17 8 12 3 7 8'%3E%3C/polyline%3E%3Cline x1='12' y1='3' x2='12' y2='15'%3E%3C/line%3E%3C/svg%3E");
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
   flex-shrink: 0;
-}
-
-.tableWrapper {
-  padding: 1.5rem;
 }
 
 .footer {
@@ -155,16 +150,17 @@
 }
 
 .links a {
-  color: #f8fafc;
+  color: #e2e8f0;
   text-decoration: none;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s;
 }
 
 .links a:hover {
-  opacity: 1;
+  color: #10b981;
+  text-decoration: underline;
 }
 
+/* Make the demo responsive */
 @media (max-width: 768px) {
   .header {
     padding: 3rem 1rem;
@@ -174,11 +170,15 @@
     font-size: 2rem;
   }
 
+  .subtitle {
+    font-size: 1rem;
+  }
+
   .content {
     padding: 1.5rem;
   }
 
-  .featuresGrid {
+  .featureCards {
     grid-template-columns: 1fr;
   }
 

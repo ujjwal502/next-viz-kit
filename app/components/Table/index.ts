@@ -1,8 +1,6 @@
-// Core components
 export { Table } from "./Table";
 export { VirtualTable } from "./VirtualTable";
 
-// Types
 export type { TableProps } from "./types";
 export type { VirtualTableProps } from "./types";
 
@@ -11,6 +9,7 @@ export type { VirtualTableProps } from "./types";
 export { TableDemo } from "./demos/TableDemo";
 export { VirtualTableDemo } from "./demos/VirtualTableDemo";
 export { TableEditingDemo } from "./demos/TableEditingDemo";
+export { FileUploadTable } from "./FileUploadTable";
 
 // Re-export subcomponents for advanced usage scenarios
 export {
@@ -20,5 +19,4 @@ export {
   TableToolbar,
 } from "./components";
 
-// Utilities
 export * from "./utils";

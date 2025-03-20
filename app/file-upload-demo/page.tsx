@@ -1,69 +1,67 @@
 "use client";
 
-import { TableEditingDemo } from "../components/Table";
+import { FileUploadTable } from "../components/Table";
 import {
-  EditCellIcon,
-  SaveChangesIcon,
-  KeyboardIcon,
+  FileFormatIcon,
+  DragDropIcon,
+  InstantPreviewIcon,
 } from "../components/icons";
 import styles from "./page.module.css";
 
-export default function TableEditingDemoPage() {
+export default function FileUploadDemoPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Table Editing Demo</h1>
+        <h1 className={styles.title}>Convert Your Excel & CSV to Tables</h1>
         <p className={styles.subtitle}>
-          Interact with editable tables using intuitive keyboard controls and
-          instant feedback
+          Upload and view your tabular data from Excel or CSV files
         </p>
       </div>
 
       <div className={styles.content}>
-        <div className={styles.featuresGrid}>
+        <div className={styles.featureCards}>
           <div className={styles.featureCard}>
             <div className={styles.iconContainer}>
-              <EditCellIcon className={styles.icon} />
+              <FileFormatIcon className={styles.icon} />
             </div>
-            <h3>Inline Editing</h3>
+            <h3>Multiple Formats</h3>
             <p>
-              Click or double-click on any cell to edit its content directly
-              within the table
+              Supports both Excel files (.xlsx, .xls) and CSV files with
+              automatic format detection
             </p>
           </div>
 
           <div className={styles.featureCard}>
             <div className={styles.iconContainer}>
-              <SaveChangesIcon className={styles.icon} />
+              <DragDropIcon className={styles.icon} />
             </div>
-            <h3>Instant Updates</h3>
+            <h3>Drag & Drop</h3>
             <p>
-              Changes are applied immediately with visual feedback, maintaining
-              data integrity
+              Easily upload files by dragging and dropping them directly onto
+              the upload area
             </p>
           </div>
 
           <div className={styles.featureCard}>
             <div className={styles.iconContainer}>
-              <KeyboardIcon className={styles.icon} />
+              <InstantPreviewIcon className={styles.icon} />
             </div>
-            <h3>Keyboard Controls</h3>
+            <h3>Instant Preview</h3>
             <p>
-              Press Enter to save changes or Escape to cancel, with full
-              keyboard navigation support
+              Immediately view your data in a fully-featured table with sorting,
+              filtering, and export capabilities
             </p>
           </div>
         </div>
 
         <div className={styles.demoCard}>
-          <div className={styles.demoDescription}>
-            This demo showcases a table with cell editing functionality. Click
-            on any cell to edit its content. Press Enter to save changes or
-            Escape to cancel.
+          <div className={styles.uploadDescription}>
+            Upload your Excel or CSV file to instantly visualize and interact
+            with your data. The table supports filtering, sorting, and even
+            exporting back to different formats.
           </div>
-          <div className={styles.tableWrapper}>
-            <TableEditingDemo />
-          </div>
+
+          <FileUploadTable />
         </div>
       </div>
 

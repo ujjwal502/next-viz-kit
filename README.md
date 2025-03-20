@@ -1,9 +1,14 @@
 # Next Viz Kit
 
 <div align="center">
-  <img src="public/next.svg" alt="Next Viz Kit Logo" width="180" height="100" style="max-width: 100%;" />
-  <h3>Modern visualization components for Next.js applications</h3>
-  <p>An open-source reference implementation of feature-rich React visualizations for complex data needs</p>
+  <h1>Next Viz Kit</h1>
+  
+  <p>
+    <small>Built with</small>
+    <img src="public/next.svg" alt="Next.js" width="60" height="15" />
+  </p>
+  
+  <h3>An open-source reference implementation of feature-rich React visualizations for complex data needs</h3>
 </div>
 
 <p align="center">
@@ -43,22 +48,14 @@ Next Viz Kit currently provides the following implemented features:
   - ✅ Cell editing capabilities
   - ✅ Export to CSV, Excel, and PDF
 - 🚀 **Virtualization**: Support for virtualized tables capable of handling large datasets efficiently
+- 📁 **Excel & CSV Conversion**: Upload and convert Excel and CSV files to interactive tables with full functionality:
+  - ✅ Drag and drop file upload
+  - ✅ Automatic column detection and mapping
+  - ✅ Instant conversion to fully functional interactive tables
+  - ✅ Retain all table features (sorting, filtering, etc.) on converted data
+  - 📚 [Detailed documentation](/app/components/Table/README.md#fileuploadtable)
 - 📱 **Responsive Design**: Tables are responsive and work on various screen sizes
 - 🎨 **Customizable**: CSS modules for easy styling and theming
-
-## Demo
-
-Explore our currently available interactive demos:
-
-- [Table Components Demo](/table-demo): Standard tables with sorting, filtering, and pagination
-- [Table Editing Demo](/table-editing-demo): Tables with editable cells
-- [Virtual Table Demo](/table-demo): Virtualized tables for large datasets
-
-Additional features coming soon:
-
-- Keyboard navigation
-- Enhanced accessibility features
-- More visualization components
 
 ## Using The Code
 
@@ -121,6 +118,32 @@ Features:
 ```tsx
 // After copying the component to your project:
 import { VirtualTable } from "@/components/Table/VirtualTable";
+```
+
+#### FileUploadTable
+
+A specialized component that enables users to upload Excel or CSV files and instantly convert them into interactive tables.
+
+Features:
+
+- Drag and drop file upload interface
+- Support for Excel (.xlsx, .xls) and CSV file formats
+- Automatic detection of file structure and columns
+- Instant conversion to fully functional tables
+- Options to use either standard or virtualized tables for the results
+- Retains all table features (sorting, filtering, pagination) for the converted data
+
+Detailed documentation: [Table Components README](/app/components/Table/README.md#fileuploadtable)
+
+```tsx
+// After copying the component to your project:
+import { FileUploadTable } from "@/components/Table/FileUploadTable";
+
+// Then in your component:
+<FileUploadTable
+  useVirtualization={false} // Set to true for large files
+  virtualTableHeight={500} // Optional height for virtualized tables
+/>;
 ```
 
 #### Editable Table
@@ -256,6 +279,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Credits
 
-- Built with [Next.js](https://nextjs.org/)
-- Table functionality powered by [TanStack Table](https://tanstack.com/table/v8)
+- Built with [Next.js](https://nextjs.org/) 15.2.0
+- Table functionality powered by [TanStack Table](https://tanstack.com/table/v8) v8.21.2
+- Virtual scrolling with [TanStack Virtual](https://tanstack.com/virtual/v3) v3.13.2
+- Excel file handling with [SheetJS](https://sheetjs.com/) (xlsx) v0.18.5
+- PDF generation with [jsPDF](https://github.com/parallax/jsPDF) v3.0.0
 - Fonts by [Geist](https://vercel.com/font)

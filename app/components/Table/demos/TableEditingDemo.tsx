@@ -93,7 +93,6 @@ export const TableEditingDemo: React.FC = () => {
     []
   );
 
-  // Handle cell value changes
   const handleCellValueChange = (
     rowIndex: number,
     columnId: string,
@@ -114,6 +113,29 @@ export const TableEditingDemo: React.FC = () => {
     });
   };
 
+  const filterData = (data: Person[], filterText: string) => {
+    if (!filterText) return data;
+    const lowercaseFilter = filterText.toLowerCase();
+
+    return data.filter(
+      (item) =>
+        item.firstName.toLowerCase().includes(lowercaseFilter) ||
+        item.lastName.toLowerCase().includes(lowercaseFilter) ||
+        item.email.toLowerCase().includes(lowercaseFilter) ||
+        item.status.toLowerCase().includes(lowercaseFilter) ||
+        item.age.toString().includes(lowercaseFilter) ||
+        item.id.toString().includes(lowercaseFilter)
+    );
+  };
+
+  // Memoize filtered data
+  const filteredData = useMemo(
+    () => filterData(data, globalFilter),
+    [data, globalFilter]
+  );
+
+  console.log(filteredData);
+
   return (
     <div className={styles.demoContainer}>
       <div className={styles.searchContainer}>
@@ -126,15 +148,13 @@ export const TableEditingDemo: React.FC = () => {
         />
       </div>
 
-      <div className={styles.infoBox}>
-        <p>
-          Click on any cell to edit its content. Press Enter to save changes or
-          Escape to cancel.
-        </p>
+      <div className={styles.editingInfo}>
+        Double-click any cell to edit content. Use Enter to save changes or
+        Escape to cancel. All changes are instantly applied.
       </div>
 
       <Table
-        data={data}
+        data={filteredData}
         columns={columns}
         enableSorting={true}
         enableFiltering={true}
