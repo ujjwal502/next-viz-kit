@@ -73,6 +73,7 @@
   margin-bottom: 0rem;
   background: linear-gradient(to right, #3b82f6, #8b5cf6);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
   line-height: 1.1;
