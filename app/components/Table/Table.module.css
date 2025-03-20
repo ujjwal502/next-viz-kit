@@ -421,3 +421,10 @@
   margin-right: 8px;
   font-size: 16px;
 }
+
+.noResults {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+  font-style: italic;
+}

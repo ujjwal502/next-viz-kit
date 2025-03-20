@@ -1,9 +1,12 @@
 import React from "react";
 import { Header, flexRender } from "@tanstack/react-table";
+import styles from "../Table.module.css";
 
+/**
+ * Renders a filter input for a column header
+ */
 export const renderFilterInput = <T,>(
   header: Header<T, unknown>,
-  styles: Record<string, string>,
   enableFiltering: boolean
 ): React.ReactNode => {
   if (!enableFiltering || !header.column.getCanFilter()) return null;
@@ -21,9 +24,11 @@ export const renderFilterInput = <T,>(
   );
 };
 
+/**
+ * Renders a sort indicator for a column header
+ */
 export const renderSortIndicator = <T,>(
   header: Header<T, unknown>,
-  styles: Record<string, string>,
   enableSorting: boolean
 ): React.ReactNode => {
   if (!enableSorting || !header.column.getCanSort()) return null;
@@ -38,27 +43,32 @@ export const renderSortIndicator = <T,>(
   );
 };
 
+/**
+ * Renders a complete header cell with sorting and filtering
+ */
 export const renderHeaderCell = <T,>(
   header: Header<T, unknown>,
-  styles: Record<string, string>,
   enableSorting: boolean,
-  enableFiltering: boolean,
-  enableColumnOrdering: boolean
+  enableFiltering: boolean
 ): React.ReactNode => {
   if (header.isPlaceholder) return null;
 
   return (
-    <div>
+    <div className={styles.headerCell}>
       <div
-        className={`${styles.headerCell} ${
+        className={
           enableSorting && header.column.getCanSort() ? styles.sortable : ""
-        } ${enableColumnOrdering ? styles.draggable : ""}`}
-        onClick={header.column.getToggleSortingHandler()}
+        }
+        onClick={
+          enableSorting && header.column.getCanSort()
+            ? header.column.getToggleSortingHandler()
+            : undefined
+        }
       >
         {flexRender(header.column.columnDef.header, header.getContext())}
-        {renderSortIndicator(header, styles, enableSorting)}
+        {renderSortIndicator(header, enableSorting)}
       </div>
-      {renderFilterInput(header, styles, enableFiltering)}
+      {renderFilterInput(header, enableFiltering)}
     </div>
   );
 };

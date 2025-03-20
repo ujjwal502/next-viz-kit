@@ -1,31 +1,23 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
   flexRender,
-  ColumnDef,
-  SortingState,
-  ColumnFiltersState,
 } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import styles from "./Table.module.css";
 import { TableHeader } from "./components";
+import { VirtualTableProps } from "./types";
+import { useTableState } from "./hooks";
 
-export type VirtualTableProps<T extends object> = {
-  data: T[];
-  columns: ColumnDef<T, unknown>[];
-  enableSorting?: boolean;
-  enableFiltering?: boolean;
-  enableColumnOrdering?: boolean;
-  height?: number;
-  estimatedRowHeight?: number;
-  className?: string;
-};
-
+/**
+ * A high-performance virtualized table component for handling large datasets
+ * efficiently by only rendering visible rows
+ */
 export function VirtualTable<T extends object>({
   data,
   columns,
@@ -36,21 +28,23 @@ export function VirtualTable<T extends object>({
   estimatedRowHeight = 40,
   className,
 }: VirtualTableProps<T>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  // Use our custom hook to manage table state
+  const {
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    columnOrder,
+    setColumnOrder,
+  } = useTableState<T>({
+    columns,
+    enablePagination: false,
+  });
 
-  const [columnOrder, setColumnOrder] = useState<string[]>(
-    columns
-      .map((column) => {
-        if (typeof column.id === "string") return column.id;
-
-        return String(column.id || "");
-      })
-      .filter(Boolean)
-  );
-
+  // Reference to the table container for virtualization
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
+  // Initialize the table
   const table = useReactTable({
     data,
     columns,
@@ -69,6 +63,7 @@ export function VirtualTable<T extends object>({
 
   const { rows } = table.getRowModel();
 
+  // Set up virtualization
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => tableContainerRef.current,
@@ -77,9 +72,9 @@ export function VirtualTable<T extends object>({
   });
 
   const totalSize = rowVirtualizer.getTotalSize();
-
   const virtualRows = rowVirtualizer.getVirtualItems();
 
+  // Calculate padding to maintain proper scroll area size
   const paddingTop = virtualRows.length > 0 ? virtualRows[0].start : 0;
   const paddingBottom =
     virtualRows.length > 0
@@ -88,6 +83,7 @@ export function VirtualTable<T extends object>({
 
   return (
     <div className={`${styles.virtualTableContainer} ${className || ""}`}>
+      {/* Fixed header */}
       <div>
         <table className={styles.virtualTable}>
           <TableHeader
@@ -99,6 +95,7 @@ export function VirtualTable<T extends object>({
         </table>
       </div>
 
+      {/* Virtualized scrollable body */}
       <div
         ref={tableContainerRef}
         className={styles.virtualScrollContainer}
@@ -134,10 +131,9 @@ export function VirtualTable<T extends object>({
           </tbody>
         </table>
 
+        {/* No results message */}
         {rows.length === 0 && (
-          <div style={{ textAlign: "center", padding: "1rem" }}>
-            No results found
-          </div>
+          <div className={styles.noResults}>No results found</div>
         )}
       </div>
     </div>

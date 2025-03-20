@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  ColumnDef,
-  SortingState,
-  ColumnFiltersState,
-  PaginationState,
 } from "@tanstack/react-table";
 import styles from "./Table.module.css";
 import {
@@ -19,27 +15,13 @@ import {
   TablePagination,
   TableToolbar,
 } from "./components";
+import { TableProps } from "./types";
+import { useTableState } from "./hooks";
 
-export type TableProps<T extends object> = {
-  data: T[];
-  columns: ColumnDef<T, unknown>[];
-  enableSorting?: boolean;
-  enableFiltering?: boolean;
-  enablePagination?: boolean;
-  enableColumnOrdering?: boolean;
-  enableExport?: boolean;
-  enableEditing?: boolean;
-  onCellValueChange?: (
-    rowIndex: number,
-    columnId: string,
-    value: unknown
-  ) => void;
-  exportFormats?: Array<"csv" | "excel" | "pdf">;
-  exportFilename?: string;
-  pageSize?: number;
-  className?: string;
-};
-
+/**
+ * A feature-rich table component with sorting, filtering, pagination,
+ * column ordering, data export, and cell editing capabilities
+ */
 export function Table<T extends object>({
   data,
   columns,
@@ -55,34 +37,32 @@ export function Table<T extends object>({
   pageSize = 10,
   className,
 }: TableProps<T>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
+  // Use our custom hook to manage table state
+  const {
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    pagination,
+    setPagination,
+    columnOrder,
+    setColumnOrder,
+    editingCell,
+    setEditingCell,
+  } = useTableState<T>({
+    columns,
+    enablePagination,
     pageSize,
   });
-  const [editingCell, setEditingCell] = useState<{
-    rowIndex: number;
-    columnId: string;
-  } | null>(null);
 
-  const [columnOrder, setColumnOrder] = useState<string[]>(
-    columns
-      .map((column) => {
-        if (typeof column.id === "string") return column.id;
-
-        return String(column.id || "");
-      })
-      .filter(Boolean)
-  );
-
+  // Initialize the table
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
       columnFilters,
-      pagination: enablePagination ? pagination : undefined,
+      pagination,
       columnOrder: enableColumnOrdering ? columnOrder : undefined,
     },
     onSortingChange: setSorting,
@@ -97,6 +77,7 @@ export function Table<T extends object>({
       : undefined,
   });
 
+  // Handle cell value change
   const handleCellValueChange = (
     rowIndex: number,
     columnId: string,
@@ -110,6 +91,7 @@ export function Table<T extends object>({
 
   return (
     <div className={`${styles.tableContainer} ${className || ""}`}>
+      {/* Table toolbar with export options */}
       {enableExport && (
         <TableToolbar
           table={table}
@@ -120,6 +102,7 @@ export function Table<T extends object>({
         />
       )}
 
+      {/* Main table */}
       <table className={styles.table}>
         <TableHeader
           headerGroups={table.getHeaderGroups()}
@@ -138,6 +121,7 @@ export function Table<T extends object>({
         />
       </table>
 
+      {/* Pagination controls */}
       {enablePagination && <TablePagination table={table} />}
     </div>
   );

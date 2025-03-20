@@ -1,5 +1,5 @@
-import { Header, HeaderGroup } from "@tanstack/react-table";
-import { animateReordering } from "./animation";
+import React from "react";
+import { Header } from "@tanstack/react-table";
 
 export const createDragImage = (headerText: string): HTMLElement => {
   const dragImage = document.createElement("div");
@@ -52,124 +52,146 @@ export const handleDragOver = (
   }
 };
 
-export const handleDragLeave = (
-  headerId: string,
-  dropTargetId: string | null,
-  setDropTargetId: React.Dispatch<React.SetStateAction<string | null>>
-): void => {
-  if (dropTargetId === headerId) {
-    setDropTargetId(null);
-  }
-};
-
-export const handleColumnReordering = <T,>(
+export const animateColumnMove = (
   sourceId: string,
   targetId: string,
-  headerGroup: HeaderGroup<T>,
-  setColumnOrder: (updater: string[]) => void,
-  currentColumnOrder: string[],
   headerRefs: Map<string, HTMLTableCellElement>,
   initialPositions: Map<string, DOMRect>,
   animatingColumns: Set<string>
 ): void => {
-  if (sourceId === targetId) return;
+  if (!headerRefs.has(sourceId) || !headerRefs.has(targetId)) return;
 
-  const columnIds = [...currentColumnOrder];
+  const sourceElement = headerRefs.get(sourceId);
+  const targetElement = headerRefs.get(targetId);
 
-  if (columnIds.length === 0) {
-    headerGroup.headers.forEach((h) => columnIds.push(h.id));
-  }
+  if (!sourceElement || !targetElement) return;
 
-  const sourceIndex = columnIds.indexOf(sourceId);
-  const targetIndex = columnIds.indexOf(targetId);
+  initialPositions.set(sourceId, sourceElement.getBoundingClientRect());
 
-  if (sourceIndex !== -1 && targetIndex !== -1) {
-    const newColumnOrder = [...columnIds];
-    newColumnOrder.splice(sourceIndex, 1);
-    newColumnOrder.splice(targetIndex, 0, sourceId);
+  // Sets up animation after the DOM has updated
+  requestAnimationFrame(() => {
+    const finalPosition = sourceElement.getBoundingClientRect();
+    const initialPosition = initialPositions.get(sourceId);
 
-    animateReordering(
-      columnIds,
-      newColumnOrder,
-      headerRefs,
-      initialPositions,
-      animatingColumns
-    );
+    if (!initialPosition) return;
 
-    setColumnOrder(newColumnOrder);
-  }
+    const deltaX = initialPosition.left - finalPosition.left;
+
+    if (Math.abs(deltaX) > 1) {
+      animatingColumns.add(sourceId);
+
+      sourceElement.style.transform = `translateX(${deltaX}px)`;
+      sourceElement.style.transition = "none";
+
+      // it forces reflow
+      void sourceElement.offsetHeight;
+
+      sourceElement.style.transition = "transform 300ms ease-out";
+      sourceElement.style.transform = "translateX(0)";
+
+      // Clean up after animation
+      const onTransitionEnd = () => {
+        sourceElement.style.transform = "";
+        sourceElement.style.transition = "";
+        animatingColumns.delete(sourceId);
+        sourceElement.removeEventListener("transitionend", onTransitionEnd);
+      };
+
+      sourceElement.addEventListener("transitionend", onTransitionEnd);
+    }
+  });
 };
 
 export const handleDrop = <T,>(
   e: React.DragEvent<HTMLTableCellElement>,
   header: Header<T, unknown>,
-  headerGroup: HeaderGroup<T>,
-  setDropTargetId: React.Dispatch<React.SetStateAction<string | null>>,
   headerRefs: Map<string, HTMLTableCellElement>,
   initialPositions: Map<string, DOMRect>,
-  animatingColumns: Set<string>
+  animatingColumns: Set<string>,
+  setDraggingId: React.Dispatch<React.SetStateAction<string | null>>,
+  setDropTargetId: React.Dispatch<React.SetStateAction<string | null>>
 ): void => {
   e.preventDefault();
+  const draggedId = e.dataTransfer.getData("columnId");
+
+  if (draggedId && draggedId !== header.id) {
+    const table = header.getContext().table;
+
+    const allColumns = table.getAllColumns();
+    const allColumnIds = allColumns.map((col) => col.id);
+
+    const currentOrder = table.getState().columnOrder || allColumnIds;
+    const newOrder = [...currentOrder];
+
+    const sourceIndex = currentOrder.indexOf(draggedId);
+    const targetIndex = currentOrder.indexOf(header.id);
+
+    if (sourceIndex !== -1) {
+      newOrder.splice(sourceIndex, 1);
+
+      let insertPosition;
+
+      if (sourceIndex < targetIndex) {
+        // Left to right movement:
+        // We want to insert AFTER the target column, not before it
+        // We need to use targetIndex because the array already shifted left
+        insertPosition = targetIndex; // This actually inserts AFTER the target
+      } else {
+        // Right to left movement:
+        // We want to insert BEFORE the target column
+        insertPosition = targetIndex;
+      }
+
+      newOrder.splice(insertPosition, 0, draggedId);
+
+      table.setColumnOrder(newOrder);
+
+      animateColumnMove(
+        draggedId,
+        header.id,
+        headerRefs,
+        initialPositions,
+        animatingColumns
+      );
+    }
+  }
+
+  setDraggingId(null);
   setDropTargetId(null);
-
-  const sourceId = e.dataTransfer.getData("columnId");
-  const targetId = header.id;
-  const context = header.getContext();
-  const setColumnOrder = context.table.setColumnOrder;
-  const currentColumnOrder = context.table.getState().columnOrder || [];
-
-  handleColumnReordering(
-    sourceId,
-    targetId,
-    headerGroup,
-    setColumnOrder,
-    currentColumnOrder,
-    headerRefs,
-    initialPositions,
-    animatingColumns
-  );
 };
 
 export const getDragAndDropProps = <T,>(
   header: Header<T, unknown>,
-  headerGroup: HeaderGroup<T>,
   enableColumnOrdering: boolean,
-  draggingId: string | null,
-  dropTargetId: string | null,
   setDraggingId: React.Dispatch<React.SetStateAction<string | null>>,
   setDropTargetId: React.Dispatch<React.SetStateAction<string | null>>,
   headerRefs: Map<string, HTMLTableCellElement>,
   initialPositions: Map<string, DOMRect>,
-  animatingColumns: Set<string>
+  animatingColumns: Set<string>,
+  draggingId: string | null
 ): React.HTMLAttributes<HTMLTableCellElement> => {
-  const context = header.getContext();
-  const setColumnOrder = context.table.setColumnOrder;
+  if (!enableColumnOrdering) {
+    return {};
+  }
 
-  if (!enableColumnOrdering || !setColumnOrder) return {};
+  const headerText = header.column.columnDef.header as string;
 
   return {
     draggable: true,
-    onDragStart: (e: React.DragEvent<HTMLTableCellElement>) =>
-      handleDragStart(
-        e,
-        header.id,
-        header.column.columnDef.header as string,
-        setDraggingId
-      ),
+    onDragStart: (e) =>
+      handleDragStart(e, header.id, headerText, setDraggingId),
     onDragEnd: () => handleDragEnd(setDraggingId, setDropTargetId),
-    onDragOver: (e: React.DragEvent<HTMLTableCellElement>) =>
+    onDragOver: (e) =>
       handleDragOver(e, header.id, draggingId, setDropTargetId),
-    onDragLeave: () =>
-      handleDragLeave(header.id, dropTargetId, setDropTargetId),
-    onDrop: (e: React.DragEvent<HTMLTableCellElement>) =>
+    onDrop: (e) =>
       handleDrop(
         e,
         header,
-        headerGroup,
-        setDropTargetId,
         headerRefs,
         initialPositions,
-        animatingColumns
+        animatingColumns,
+        setDraggingId,
+        setDropTargetId
       ),
   };
 };

@@ -34,21 +34,31 @@ The code is modular, well-documented, and built with modern React patterns, maki
 
 ## Features
 
-Next Viz Kit provides several high-performance, customizable visualization components:
+Next Viz Kit currently provides the following implemented features:
 
-- 📊 **Advanced Tables**: Feature-rich tables with sorting, filtering, pagination, and more
-- 🚀 **Virtualization**: Support for virtualized tables capable of handling 10,000+ rows efficiently
-- 🔄 **Data Transformation**: Utilities for transforming and manipulating your data
-- 📱 **Responsive Design**: All components are responsive and work on various screen sizes
-- 🎨 **Customizable**: Easily theme and style components to match your application
-- 📦 **Export Options**: Export data to CSV, Excel, or PDF with one click
+- 📊 **Advanced Tables**: Feature-rich tables with:
+  - ✅ Sorting
+  - ✅ Filtering (global and column-specific)
+  - ✅ Pagination
+  - ✅ Cell editing capabilities
+  - ✅ Export to CSV, Excel, and PDF
+- 🚀 **Virtualization**: Support for virtualized tables capable of handling large datasets efficiently
+- 📱 **Responsive Design**: Tables are responsive and work on various screen sizes
+- 🎨 **Customizable**: CSS modules for easy styling and theming
 
 ## Demo
 
-Explore our interactive demos:
+Explore our currently available interactive demos:
 
-- [Table Components Demo](/table-demo): Standard and virtualized tables with various features
-- More components coming soon!
+- [Table Components Demo](/table-demo): Standard tables with sorting, filtering, and pagination
+- [Table Editing Demo](/table-editing-demo): Tables with editable cells
+- [Virtual Table Demo](/table-demo): Virtualized tables for large datasets
+
+Additional features coming soon:
+
+- Keyboard navigation
+- Enhanced accessibility features
+- More visualization components
 
 ## Using The Code
 
@@ -81,7 +91,15 @@ Once you understand how the components work, you can copy the relevant component
 
 #### Standard Table
 
-A feature-rich table component with sorting, filtering, pagination, and more.
+A feature-rich table component with sorting, filtering, pagination, and export capabilities.
+
+Features:
+
+- Sorting (click on column headers)
+- Filtering (global and column-specific)
+- Pagination with customizable page size
+- Export to CSV, Excel, and PDF formats
+- Responsive design
 
 Detailed documentation: [Table Components README](/app/components/Table/README.md)
 
@@ -92,11 +110,42 @@ import { Table } from "@/components/Table/Table";
 
 #### Virtualized Table
 
-A high-performance table for large datasets that can handle 10,000+ rows efficiently.
+A high-performance table for large datasets that efficiently renders only visible rows.
+
+Features:
+
+- Handles large datasets with minimal performance impact
+- Maintains all standard table features (sorting, filtering)
+- Smooth scrolling experience
 
 ```tsx
 // After copying the component to your project:
 import { VirtualTable } from "@/components/Table/VirtualTable";
+```
+
+#### Editable Table
+
+A table component that supports inline cell editing.
+
+Features:
+
+- Edit cell contents directly within the table
+- Enter to save, Escape to cancel
+- All standard table features included
+
+```tsx
+// Import the standard Table component and enable editing
+import { Table } from "@/components/Table/Table";
+
+// Then in your component:
+<Table
+  data={data}
+  columns={columns}
+  enableEditing={true}
+  onCellValueChange={(rowIndex, columnId, value) => {
+    // Handle the value change
+  }}
+/>;
 ```
 
 ## Example Usage
@@ -113,6 +162,7 @@ type Person = {
   firstName: string;
   lastName: string;
   age: number;
+  email: string;
   status: "active" | "inactive" | "pending";
 };
 
@@ -121,17 +171,45 @@ const columns: ColumnDef<Person, unknown>[] = [
   {
     accessorKey: "id",
     header: "ID",
+    size: 60,
   },
   {
     accessorKey: "firstName",
     header: "First Name",
   },
-  // ... other columns
+  {
+    accessorKey: "lastName",
+    header: "Last Name",
+  },
+  {
+    accessorKey: "age",
+    header: "Age",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: (info) => {
+      const status = info.getValue() as string;
+      return <span className={`status-badge status-${status}`}>{status}</span>;
+    },
+  },
 ];
 
-// Your data
+// Sample data
 const data: Person[] = [
-  // Your data here
+  {
+    id: 1,
+    firstName: "John",
+    lastName: "Doe",
+    age: 30,
+    email: "john.doe@example.com",
+    status: "active",
+  },
+  // More data...
 ];
 
 function MyComponent() {
@@ -142,10 +220,9 @@ function MyComponent() {
       enableSorting={true}
       enableFiltering={true}
       enablePagination={true}
-      enableColumnOrdering={true}
       enableExport={true}
       exportFormats={["csv", "excel", "pdf"]}
-      exportFilename="my-data"
+      exportFilename="people-data"
       pageSize={10}
     />
   );
