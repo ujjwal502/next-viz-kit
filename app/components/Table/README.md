@@ -38,7 +38,6 @@ A specialized table component that allows users to upload Excel (.xlsx, .xls) or
 - Expandable rows for hierarchical data
 - Server-side operations support
 - Pagination with customizable controls
-- Export to CSV, Excel, PDF
 - Keyboard navigation and accessibility
 - Row/cell highlighting based on conditions
 
